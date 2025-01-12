@@ -1,0 +1,84 @@
+body {
+    background-image: url(../../images/iteration-1-images/home-banner.png);
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+}
+
+.homepage-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+    text-align: center;
+}
+
+.homepage-title {
+    color: #FFFFFF;
+    margin-top: 0;
+    font-weight: bold;
+    font-family: "Londrina Solid", sans-serif;
+    font-size: 5rem;
+}
+
+.homepage-text {
+    color: #FFFFFF;
+    font-family: "Roboto Condensed", sans-serif;
+    padding: 0;
+    margin: 20px 0;
+    font-size: 2.5rem;
+}
+
+.homepage-button {
+    text-decoration: none;
+    border-radius: 40px;
+    background-color: #FDC913;
+    padding: 10px 40px;
+    margin: 20px 0;
+    font-family: "Barlow";
+    font-size: 1.5rem;
+    color: #292929;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+}
+@media screen and (max-width: 768px) {
+    .homepage-container{
+       background-size: cover;
+    }
+    .homepage-title {
+        font-size: 1.2rem; /* Mobil için küçültülmüş font boyutu */
+        margin-top: 5px;
+    }
+
+    .homepage-text {
+        font-size: 1.2rem; /* Mobil için küçültülmüş font boyutu */
+        margin: 15px 0;
+    }
+
+    .homepage-button {
+        padding: 8px 30px; /* Daha küçük buton boyutu */
+        font-size: 0.9rem;
+    }
+}
+
+/* Daha küçük mobil cihazlar için (max-width: 480px) */
+@media screen and (max-width: 480px) {
+    .homepage-container{
+        background-size: cover;
+     }
+
+    .homepage-title {
+        font-size: 2.5rem; /* Küçük ekran için daha küçük font boyutu */
+    }
+
+    .homepage-text {
+        font-size: 1rem; /* Küçük ekran için daha küçük font boyutu */
+    }
+
+    .homepage-button {
+        padding: 6px 20px; /* Buton küçültüldü */
+        font-size: 0.8rem;
+    }
+}
