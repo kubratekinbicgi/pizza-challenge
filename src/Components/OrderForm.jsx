@@ -1,8 +1,8 @@
 
 import React, { useState } from "react"
 
-export default function OrderForm() {
-
+export default function OrderForm({onSubmit}) {
+     
     const sizes = ["Küçük", "Orta", "Büyük"]; 
     const doughOptions = ["İnce", "Orta", "Kalın"];
     const extras = [
@@ -19,45 +19,71 @@ export default function OrderForm() {
         "Biber",
         "Kabak",
       ];
-    
+      const basePrice = 85.5; 
+      const extraPricePerSelection = 5; 
+      
    
      const [selectedSize, setSelectedSize] = useState("");
      const [selectedDough, setSelectedDough] = useState(""); 
      const [selectedExtras, setSelectedExtras] = useState([]); 
      const [orderNote , setOrderNote] = useState("");
+     const [quantity, setQuantity] = useState(1); 
+     
 
-
-    function handleSizeChange(event) {
-        setSelectedSize(event.target.value)
-    }
-
-    const handleDoughChange = (event) => {
-        setSelectedDough(event.target.value);
-      };
-
-    function handleExtrasChange (event) {
-        const value = event.target.value;
-        if(selectedExtras.includes(value)) {
-            setSelectedExtras(selectedExtras.filter((extra) => extra !== value))
-        }else{
-          if(selectedExtras.length < 10) {
-            setSelectedExtras([...selectedExtras, value]);
+      function handleChange(event){
+        const {name, value} = event.target;
+        if(name === "note"){
+          setOrderNote(value);
+        } else if (name === "size"){
+          setSelectedSize(value);
+        } else if (name === "dough") {
+          setSelectedDough(value);
+        } else if (name === "extras") {
+          if (selectedExtras.includes(value)) {
+            setSelectedExtras(selectedExtras.filter((extra) => extra !== value));
           } else {
-            alert("En fazla 10 malzeme seçebilirsiniz")
+            if (selectedExtras.length < 10) {
+              setSelectedExtras([...selectedExtras, value]);
+            } else {
+              alert("En fazla 10 malzeme seçebilirsiniz");
+            }
           }
         }
+          
+      } 
+    function increment() {
+      setQuantity(function (prev) {
+        return prev + 1;
+      });
     }
+    
+    function decrement() {
+      if (quantity > 1) {
+        setQuantity(function (prev) {
+          return prev - 1;
+        });
+      }
+    }
+    const extrasTotal = selectedExtras.length * extraPricePerSelection;
+    const totalPrice = basePrice * quantity + extrasTotal;
 
-    function handleOrderNote(event) {
-        setOrderNote(event.target.value)
+
+    function isFormValid() {
+      return selectedSize !== "" && selectedDough !== "";
     }
+    
     function handleSubmit(event) {
       event.preventDefault();
       if (!selectedSize || !selectedDough) {
         alert("Lütfen tüm zorunlu alanları doldurun!");
         return;
       }
+
+
+      onSubmit();
     }
+
+
 
     return(
         <main>
@@ -73,7 +99,7 @@ export default function OrderForm() {
               name="size"
               value={size}
               checked={selectedSize === size}
-              onChange={handleSizeChange}
+              onChange={handleChange}
             />
             {size}
           </label>
@@ -85,13 +111,16 @@ export default function OrderForm() {
         Hamur Seç <span style={{ color: "red" }}>*</span>
       </h4>
       <select 
-      name="selectedDough" 
-      onChange={handleDoughChange}
+      name="dough" 
+      onChange={handleChange}
       value={selectedDough}
       >
         <option value="">Hamur Kalınlığı</option>
         {doughOptions.map((dough) => (
-          <option key={dough} value={dough}>
+          <option 
+          key={dough} 
+          value={dough}
+          >
             {dough}
           </option>
         ))}
@@ -106,9 +135,9 @@ export default function OrderForm() {
             <input
               type="checkbox"
               value={extra}
-              name="extra"
+              name="extras"
               checked={selectedExtras.includes(extra)}
-              onChange={handleExtrasChange}
+              onChange={handleChange}
             />
             {extra}
           </label>
@@ -121,11 +150,33 @@ export default function OrderForm() {
             Sipariş Notu
         </label>
         <textarea 
-        name="text" 
+        name="note" 
         id="note"
         value={orderNote}
-        onChange={handleOrderNote}></textarea>
+        onChange={handleChange}
+        >
 
+        </textarea>
+
+        <button onClick={decrement}>
+          -
+        </button>
+        <div>
+          {quantity}
+        </div>
+        <button onClick={increment}>
+          +
+        </button>
+        <div>
+          <h4>Sipariş Özeti</h4>
+          <p>Seçimler: {extrasTotal.toFixed(2)}₺</p>
+          <p>Toplam: {totalPrice.toFixed(2)}₺ </p>
+          <button 
+          disabled={!isFormValid()}
+          >
+            Siparişi Ver
+          </button>
+        </div>
     </form>
     </main>  
     

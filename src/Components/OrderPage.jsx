@@ -1,17 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import OrderForm from "./OrderForm";
+import OrderConfirmation from "./OrderConfirmation";
 
 export default function OrderPage(){
 
+    const [isOrderSubmitted, setIsOrderSubmitted] = useState(false); 
+
+    const handleOrderSubmit = () => {
+    setIsOrderSubmitted(true); 
+  };
+
     return(
         <div className="order-container">
+            {isOrderSubmitted ? (
+        <OrderConfirmation />
+      ) : (
+        <>
             <div className="order-content">
                 <h1 className="order-title">Teknolojik Yemekler</h1>
                 <NavLink to="/" exact>
                 Anasayfa
                 </NavLink>
-                {"  "}
+                {"  -  "}
                 <NavLink to="/order">
                 Sipariş Oluştur
                 </NavLink>
@@ -27,8 +38,9 @@ export default function OrderPage(){
         <h6>4.9</h6>
         <h6>(200)</h6>
 
-        <OrderForm/>
-        
+        <OrderForm onSubmit={handleOrderSubmit}/>
+        </>
+      )}
     </div>
     )
 }
