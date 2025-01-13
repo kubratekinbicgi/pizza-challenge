@@ -3,7 +3,7 @@ import "./OrderConfirmation.css"
 export default function OrderConfirmation() {
 
     return(
-        <main>
+        <main className="confirmation-main">
             <div>
                 <p>Teknolojik Yemekler</p>
                 <p>TEBRİKLER! <br/>SİPARİŞİNİZ ALINDI! </p>
