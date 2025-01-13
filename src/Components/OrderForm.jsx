@@ -2,10 +2,10 @@
 import React, { useState } from "react"
 import axios from "axios";
 
-export default function OrderForm({onSubmit}) {
+export default function OrderForm({submitCallback}) {
      
     const sizes = ["Küçük", "Orta", "Büyük"]; 
-    const doughOptions = ["İnce", "Orta", "Kalın"];
+    const doughOptions = ["İnce", "Orta", "Kalın", "Sarımsak Kenar"];
     const extras = [
         "Pepperoni",
         "Sosis",
@@ -22,7 +22,7 @@ export default function OrderForm({onSubmit}) {
       ];
       const basePrice = 85.5; 
       const extraPricePerSelection = 5; 
-      
+
    
      const [selectedSize, setSelectedSize] = useState("");
      const [selectedDough, setSelectedDough] = useState(""); 
@@ -30,7 +30,7 @@ export default function OrderForm({onSubmit}) {
      const [orderNote , setOrderNote] = useState("");
      const [quantity, setQuantity] = useState(1); 
      const [name, setName] = useState("");
-     
+     const [valid, setValid] = useState(false);
 
      function handleChange(event) {
       const { name, value } = event.target;
@@ -73,23 +73,23 @@ export default function OrderForm({onSubmit}) {
     const extrasTotal = selectedExtras.length * extraPricePerSelection;
     const totalPrice = basePrice * quantity + extrasTotal;
 
-
     function isFormValid() {
-      return selectedSize !== "" &&
-      selectedDough !== "" &&
-      selectedExtras.length >= 4 &&
-      name.trim().length >= 3 
+      if(selectedSize !== "" && selectedDough !== "" && selectedExtras.length >= 4 && name.trim().length >= 3) {
+        setValid(true);
+        return true;
+      };
+      return false;
     }
     
     async function handleSubmit(event) {
       event.preventDefault();
 
+      console.log("valid degeri: ", valid)
       if (!isFormValid()) {
         alert("Lütfen tüm zorunlu alanları doldurun ve en az 4 malzeme seçin!");
         return;
       }
-
-     
+      
       const orderData = {
         name,
         size: selectedSize,
@@ -103,7 +103,7 @@ export default function OrderForm({onSubmit}) {
       try {
         const response = await axios.post("https://reqres.in/api/pizza", orderData);
         console.log("Sipariş Özeti:", response.data);
-        onSubmit();
+        submitCallback(response.data);
       } catch (error) {
         console.error("Sipariş sırasında bir hata oluştu:", error);
       }
@@ -219,8 +219,7 @@ export default function OrderForm({onSubmit}) {
           <p className="total">Toplam: {totalPrice.toFixed(2)}₺ </p>
           <button 
           className="submit-button"
-          disabled={!isFormValid()}
-          onClick={handleSubmit}
+          disabled={valid}
           >
             Siparişi Ver
           </button>
