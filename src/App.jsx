@@ -1,9 +1,7 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import workintech from '/workintech.svg'
 
 import HomePage from './Components/HomePage'
 import OrderPage from "./Components/OrderPage"
+
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 function App() {
