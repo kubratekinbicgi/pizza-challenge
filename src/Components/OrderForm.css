@@ -1,0 +1,162 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .radio {
+    display: block; 
+    margin-bottom: 10px; 
+    font-size: 14px; 
+    font-family: Arial, sans-serif; 
+  }
+  .size-dough-container {
+    display: flex; 
+    justify-content: center; 
+     
+    align-items: flex-start; 
+  }
+  
+  .selected-size {
+    flex: 1; 
+    margin-left: 90px;
+  }
+  
+  .dough-selection {
+    flex: 1; 
+  }
+  .extras-container {
+    margin: 20px 0;
+  }
+  
+  .extra-info {
+    margin-bottom: 10px;
+    color: gray;
+  }
+  
+  .extras-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 15px; 
+    margin: 10px 0; 
+    align-items: center; 
+    justify-content: space-between; 
+  }
+  
+  .extra-item {
+    display: flex;
+    align-items: center; 
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  
+  .extra-item input {
+    margin-right: 8px; 
+  }
+
+
+.input-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+textarea,
+input[type="text"] {
+  width: 80%;
+  min-height: 40px;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #FFFFFF;
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+  margin-top: 10px;
+  resize: none;
+}
+
+.summary-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 200px;
+  margin: 20px auto;
+}
+
+
+.quantity-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quantity-container button {
+  background-color: #FDC913; 
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+}
+
+.quantity-container div {
+  padding: 10px 20px;
+  border: 1px solid #FFFFFF;
+  border-radius: 5px;
+  background-color: #FFFFFF;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+
+.summary-container {
+  border: 1px solid #FFFFFF;
+  border-radius: 10px;
+  padding: 20px;
+  width: 300px;
+  text-align: center;
+}
+
+.summary-container h4 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.summary-container p {
+  margin: 5px 0;
+  font-size: 16px;
+}
+
+.summary-container .total {
+  color:#CE2829;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+
+.submit-button {
+  margin-top: 20px;
+  background-color: #FDC913;
+  border: none;
+  padding: 15px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.submit-button:hover {
+  background-color: #e6c22e; 
+}
+ 
+
+  

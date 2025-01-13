@@ -1,16 +1,16 @@
-body {
+
+
+
+.homepage-container {
     background-image: url(../../images/iteration-1-images/home-banner.png);
     background-size: cover;
     margin: 0;
     padding: 0;
-}
-
-.homepage-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 70vh;
+    height: 100vh;
     text-align: center;
 }
 
@@ -48,37 +48,37 @@ body {
        background-size: cover;
     }
     .homepage-title {
-        font-size: 1.2rem; /* Mobil için küçültülmüş font boyutu */
+        font-size: 1.2rem; 
         margin-top: 5px;
     }
 
     .homepage-text {
-        font-size: 1.2rem; /* Mobil için küçültülmüş font boyutu */
+        font-size: 1.2rem; 
         margin: 15px 0;
     }
 
     .homepage-button {
-        padding: 8px 30px; /* Daha küçük buton boyutu */
+        padding: 8px 30px; 
         font-size: 0.9rem;
     }
 }
 
-/* Daha küçük mobil cihazlar için (max-width: 480px) */
+
 @media screen and (max-width: 480px) {
     .homepage-container{
         background-size: cover;
      }
 
     .homepage-title {
-        font-size: 2.5rem; /* Küçük ekran için daha küçük font boyutu */
+        font-size: 2.5rem; 
     }
 
     .homepage-text {
-        font-size: 1rem; /* Küçük ekran için daha küçük font boyutu */
+        font-size: 1rem; 
     }
 
     .homepage-button {
-        padding: 6px 20px; /* Buton küçültüldü */
+        padding: 6px 20px; 
         font-size: 0.8rem;
     }
 }

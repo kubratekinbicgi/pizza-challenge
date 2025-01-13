@@ -1,5 +1,6 @@
 
 import React, { useState } from "react"
+import axios from "axios";
 
 export default function OrderForm({onSubmit}) {
      
@@ -28,29 +29,34 @@ export default function OrderForm({onSubmit}) {
      const [selectedExtras, setSelectedExtras] = useState([]); 
      const [orderNote , setOrderNote] = useState("");
      const [quantity, setQuantity] = useState(1); 
+     const [name, setName] = useState("");
      
 
-      function handleChange(event){
-        const {name, value} = event.target;
-        if(name === "note"){
-          setOrderNote(value);
-        } else if (name === "size"){
-          setSelectedSize(value);
-        } else if (name === "dough") {
-          setSelectedDough(value);
-        } else if (name === "extras") {
-          if (selectedExtras.includes(value)) {
-            setSelectedExtras(selectedExtras.filter((extra) => extra !== value));
+     function handleChange(event) {
+      const { name, value } = event.target;
+    
+      if (name === "note") {
+        setOrderNote(value);
+      } else if (name === "name") {
+        setName(value);
+      } else if (name === "size") {
+        setSelectedSize(value);
+      } else if (name === "dough") {
+        setSelectedDough(value);
+      } else if (name === "extras") {
+        if (selectedExtras.includes(value)) {
+          setSelectedExtras(selectedExtras.filter((extra) => extra !== value));
+        } else {
+          if (selectedExtras.length < 10) {
+            setSelectedExtras([...selectedExtras, value]);
           } else {
-            if (selectedExtras.length < 10) {
-              setSelectedExtras([...selectedExtras, value]);
-            } else {
-              alert("En fazla 10 malzeme seçebilirsiniz");
-            }
+            alert("En fazla 10 malzeme seçebilirsiniz.");
           }
-        }
           
-      } 
+        }
+      }
+    }
+      
     function increment() {
       setQuantity(function (prev) {
         return prev + 1;
@@ -69,31 +75,50 @@ export default function OrderForm({onSubmit}) {
 
 
     function isFormValid() {
-      return selectedSize !== "" && selectedDough !== "";
+      return selectedSize !== "" &&
+      selectedDough !== "" &&
+      selectedExtras.length >= 4 &&
+      name.trim().length >= 3 
     }
     
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
       event.preventDefault();
-      if (!selectedSize || !selectedDough) {
-        alert("Lütfen tüm zorunlu alanları doldurun!");
+
+      if (!isFormValid()) {
+        alert("Lütfen tüm zorunlu alanları doldurun ve en az 4 malzeme seçin!");
         return;
       }
 
-
-      onSubmit();
+     
+      const orderData = {
+        name,
+        size: selectedSize,
+        dough: selectedDough,
+        extras: selectedExtras,
+        quantity,
+        totalPrice,
+        note: orderNote,
+      };
+  
+      try {
+        const response = await axios.post("https://reqres.in/api/pizza", orderData);
+        console.log("Sipariş Özeti:", response.data);
+        onSubmit();
+      } catch (error) {
+        console.error("Sipariş sırasında bir hata oluştu:", error);
+      }
     }
-
-
 
     return(
         <main>
         <form onSubmit={handleSubmit}>
+          <div className="size-dough-container">
         <div className="selected-size">
         <h4>
           Boyut Seç <span style={{ color: "red" }}>*</span>
         </h4>
         {sizes.map((size) => (
-          <label key={size}>
+          <label className="radio" key={size}>
             <input
               type="radio"
               name="size"
@@ -106,7 +131,7 @@ export default function OrderForm({onSubmit}) {
         ))}
         </div>
 
-        <div>
+        <div className="dough-selection" >
         <h4>
         Hamur Seç <span style={{ color: "red" }}>*</span>
       </h4>
@@ -114,6 +139,7 @@ export default function OrderForm({onSubmit}) {
       name="dough" 
       onChange={handleChange}
       value={selectedDough}
+      className="dough"
       >
         <option value="">Hamur Kalınlığı</option>
         {doughOptions.map((dough) => (
@@ -126,10 +152,11 @@ export default function OrderForm({onSubmit}) {
         ))}
       </select>
         </div>
-        <div>
-      <h4>Ek Malzemeler</h4>
-      <p>En Fazla 10 malzeme seçebilirsiniz. 5₺</p>
-      <div className="extra">
+        </div>
+        <div className="extras-container">
+      <h4 >Ek Malzemeler</h4>
+      <p className="extra-info">En Fazla 10 malzeme seçebilirsiniz. 5₺</p>
+      <div className="extras-grid">
         {extras.map((extra) => (
           <label key={extra}>
             <input
@@ -144,41 +171,63 @@ export default function OrderForm({onSubmit}) {
         ))}
       </div>
      </div>
+        <div className="input-container">
+     <label htmlFor="name">
+           Adınız Soyadınız <span style={{ color: "red" }}>*</span>
+        </label>
+        <input 
+        type="text"
+        name="name" 
+        id="name"
+        value={name}
+        placeholder="Lütfen Adınızı ve Soyadınızı yazınız.."
+        onChange={handleChange}
+        />
+      </div>
+       
+      
 
-   
+        <div className="input-container">
         <label htmlFor="note">
             Sipariş Notu
         </label>
-        <textarea 
+        <input
+        type="text" 
         name="note" 
         id="note"
         value={orderNote}
         onChange={handleChange}
-        >
+        placeholder="Eklemek istediğiniz bir not var mı?"
+        />
+          </div>
+        <div className="summary-wrapper">
+          <div className="quantity-container">
 
-        </textarea>
-
-        <button onClick={decrement}>
+        <button type="button" onClick={decrement}>
           -
         </button>
         <div>
           {quantity}
         </div>
-        <button onClick={increment}>
+        <button type="button" onClick={increment}>
           +
         </button>
-        <div>
-          <h4>Sipariş Özeti</h4>
+        </div>
+        <div className="summary-container">
+          <h4>Sipariş Toplamı</h4>
           <p>Seçimler: {extrasTotal.toFixed(2)}₺</p>
-          <p>Toplam: {totalPrice.toFixed(2)}₺ </p>
+          <p className="total">Toplam: {totalPrice.toFixed(2)}₺ </p>
           <button 
+          className="submit-button"
           disabled={!isFormValid()}
+          onClick={handleSubmit}
           >
             Siparişi Ver
           </button>
+        </div>
         </div>
     </form>
     </main>  
     
     );
-}
+  }
